@@ -6,7 +6,7 @@ module.exports = function(app, db) {
         const details = { _id: objectID(id) };
         db.collection('users').findOne(details, (err, item) => {
             if (err) {
-                res.send({ error: 'An error has occured' });
+                res.send({ status: false, error: 'An error has occured' });
             } else {
                 res.send(item);
             }
@@ -21,9 +21,12 @@ module.exports = function(app, db) {
         };
         db.collection('users').update(details, user, (err, result) => {
             if (err) {
-                res.send({ error: 'An error has occured' });
+                res.send({ status: false, error: 'An error has occured' });
             } else {
-                res.send(user);
+                res.send({
+                    status: !!result.result.ok,
+                    user
+                });
             }
         });
     });
@@ -32,7 +35,7 @@ module.exports = function(app, db) {
         const details = { _id: objectID(id) };
         db.collection('users').remove(details, err => {
             if (err) {
-                res.send({ error: 'An error has occured' });
+                res.send({ status: false, error: 'An error has occured' });
             } else {
                 res.send({
                     id: id,
@@ -48,7 +51,7 @@ module.exports = function(app, db) {
         };
         db.collection('users').insert(user, (err, result) => {
             if (err) {
-                res.send({ error: 'An error has occured' });
+                res.send({ status: false, error: 'An error has occured' });
             } else {
                 res.send(result.ops[0]);
             }

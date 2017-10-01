@@ -4,12 +4,15 @@
   "description": "xaff api",
   "main": "api.js",
   "scripts": {
+    "test": "npm run lint",
+    "lint": "eslint .",
     "dev": "nodemon api.js"
   },
+  "repository": "git+https://github.com/iSm1le/api.git",
   "keywords": [
     "api"
   ],
-  "author": "iSm1le <sm1leua@ya.ru>",
+  "author": "iSm1le <ism1le@xaff.ru>",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.2",
