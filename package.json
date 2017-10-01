@@ -1,0 +1,33 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "description": "xaff api",
+  "main": "api.js",
+  "scripts": {
+    "dev": "nodemon api.js"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "iSm1le <sm1leua@ya.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1",
+    "mongodb": "^2.2.31"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1",
+    "eslint": "^4.6.0",
+    "eslint-config-isalpha": "^1.0.4"
+  },
+  "eslintConfig": {
+    "extends": "isalpha",
+    "rules": {
+      "no-process-env": "off"
+    }
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}
