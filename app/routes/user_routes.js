@@ -1,60 +1,46 @@
-const objectID = require('mongodb').ObjectID;
-/* eslint-disable func-names */
-module.exports = function(app, db) {
+const user = require('../models/user');
+
+/* eslint-disable func-names, consistent-return */
+module.exports = function(app) {
     app.get('/user/:id', (req, res) => {
-        const id = req.params.id;
-        const details = { _id: objectID(id) };
-        db.collection('users').findOne(details, (err, item) => {
+        user.findOne({ _id: req.params.id }, (err, obj) => {
             if (err) {
                 res.send({ status: false, error: 'An error has occured' });
             } else {
-                res.send(item);
+                if (!obj) return res.send({ status: false, error: 'User not found' });
+                res.json(obj);
             }
         });
     });
     app.put('/user/:id', (req, res) => {
-        const id = req.params.id;
-        const details = { _id: objectID(id) };
-        const user = {
-            username: req.body.username,
-            passowrd: req.body.password
-        };
-        db.collection('users').update(details, user, (err, result) => {
+        user.findOneAndUpdate({ _id: req.params.id }, req.body, err => {
             if (err) {
                 res.send({ status: false, error: 'An error has occured' });
             } else {
-                res.send({
-                    status: !!result.result.ok,
-                    user
-                });
+                res.sendStatus(200);
             }
         });
     });
     app.delete('/user/:id', (req, res) => {
-        const id = req.params.id;
-        const details = { _id: objectID(id) };
-        db.collection('users').remove(details, err => {
+        user.findOneAndRemove({ _id: req.params.id }, err => {
             if (err) {
                 res.send({ status: false, error: 'An error has occured' });
             } else {
-                res.send({
-                    id: id,
-                    status: 'deleted'
-                });
+                res.sendStatus(200);
             }
         });
     });
-    app.post('/users', (req, res) => {
-        const user = {
-            username: req.body.username,
-            passowrd: req.body.password
-        };
-        db.collection('users').insert(user, (err, result) => {
+    app.post('/user', (req, res) => {
+        const obj = new user(req.body); // eslint-disable-line new-cap
+        obj.save((err, item) => {
+            // 11000 is the code for duplicate key error
+            if (err && err.code === 11000) {
+                res.sendStatus(400);
+            }
             if (err) {
                 res.send({ status: false, error: 'An error has occured' });
-            } else {
-                res.send(result.ops[0]);
             }
+            res.status(200).json(item);
         });
     });
 };
