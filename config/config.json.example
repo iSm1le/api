@@ -1,0 +1,5 @@
+{
+  "dbUrl": "mongodb://<username>:<password>@<server>:<ip>/<db>",
+  "sToken": "TOKEN",
+  "port": 3000
+}
