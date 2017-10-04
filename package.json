@@ -2,11 +2,11 @@
   "name": "api",
   "version": "0.0.1",
   "description": "xaff api",
-  "main": "api.js",
   "scripts": {
     "test": "npm run lint",
-    "lint": "eslint .",
-    "dev": "nodemon api.js"
+    "lint": "tslint --project server/tsconfig.json --format stylish",
+    "dev": "concurrently \"tsc -w -p server\" \"nodemon dist/api.js\"",
+    "prod": "tsc -p server"
   },
   "repository": "git+https://github.com/iSm1le/api.git",
   "keywords": [
@@ -14,23 +14,25 @@
   ],
   "author": "iSm1le <ism1le@xaff.ru>",
   "license": "MIT",
+  "private": true,
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
+    "commonjs": "0.0.1",
+    "dotenv": "^4.0.0",
     "express": "^4.16.1",
     "jsonwebtoken": "^8.0.1",
-    "mongoose": "^4.11.14"
+    "mongoose": "^4.11.14",
+    "morgan": "^1.9.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {
+    "@types/node": "^8.0.32",
+    "concurrently": "^3.5.0",
     "nodemon": "^1.12.1",
-    "eslint": "^4.6.0",
-    "eslint-config-isalpha": "^1.0.4"
-  },
-  "eslintConfig": {
-    "extends": "isalpha",
-    "rules": {
-      "no-process-env": "off"
-    }
+    "ts-node": "^3.3.0",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3"
   },
   "engines": {
     "node": ">=8.0.0"
