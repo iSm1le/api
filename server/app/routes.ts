@@ -8,6 +8,8 @@ export default function setRoutes(app) {
 
     const userCtrl = new UserCtrl();
 
+    router.route('/').get(function(req, res) { res.redirect('docs'); });
+
     // Users
     router.route('/user/login').post(userCtrl.login);
     router.route('/users').get(userCtrl.getAll);
