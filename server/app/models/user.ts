@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
 // Before saving the user, hash the password
 userSchema.pre('save', function(next) {
     const user = this;
-    console.log('Launched pre save with', user);
     if (!user.isModified('password')) { return next(); }
     bcrypt.genSalt(10, function(err, salt) {
         if (err) { return next(err); }
