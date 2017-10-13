@@ -12,9 +12,10 @@ export default function setRoutes(app) {
 
     // Users
     router.route('/user/login').post(userCtrl.login);
+    router.route('/user').post(userCtrl.insert);
+
     router.route('/users').get(userCtrl.getAll);
     router.route('/users/count').get(userCtrl.count);
-    router.route('/user').post(userCtrl.insert);
     router.route('/user/id/:id').get(userCtrl.get);
     router.route('/user/id/:id').put(userCtrl.update);
     router.route('/user/id/:id').delete(userCtrl.delete);
