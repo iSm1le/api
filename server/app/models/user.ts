@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, lowercase: true, trim: true, required: true },
     password: { type: String, required: true },
+    /* TODO services - array of roles for different projects */
     services: String,
     created: { type: Date, default: Date.now() }
 });
@@ -12,6 +13,7 @@ const userSchema = new mongoose.Schema({
 // Before saving the user, hash the password
 userSchema.pre('save', function(next) {
     const user = this;
+    console.log('Launched pre save with', user);
     if (!user.isModified('password')) { return next(); }
     bcrypt.genSalt(10, function(err, salt) {
         if (err) { return next(err); }
@@ -20,6 +22,19 @@ userSchema.pre('save', function(next) {
             user.password = hash;
             next();
         });
+    });
+});
+
+userSchema.pre('findOneAndUpdate', function(next) {
+    const user = this.getUpdate();
+    if (!user.password) { return next(); }
+    bcrypt.genSalt(10, (err, salt) => {
+       if (err) { return next(err); }
+       bcrypt.hash(user.password, salt, (error, hash) => {
+           if (error) { return next(error); }
+           user.password = hash;
+           next();
+       });
     });
 });
 

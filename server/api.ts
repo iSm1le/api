@@ -13,12 +13,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(morgan('dev'));
-/* UNCOMMENT THIS IF YOU WANT CORS REQUESTS TO WORK */
+/* COMMENT THIS BLOCK IF YOU DON'T WANT CORS REQUESTS TO WORK */
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, charset');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS, DELETE, POST');
     next();
 });
+
+/* TODO secure some api paths */
 
 mongoose.connect(config.dbUrl, { useMongoClient: true });
 const db = mongoose.connection;
