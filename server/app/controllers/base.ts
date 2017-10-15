@@ -50,7 +50,7 @@ abstract class BaseCtrl {
     }
 
     // Delete by id
-    delete = (req, res) => {
+    remove = (req, res) => {
         this.model.findOneAndRemove({ _id: req.params.id }, (err) => {
             if (err) { return console.error(err); }
             res.sendStatus(200);

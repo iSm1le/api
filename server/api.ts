@@ -2,6 +2,8 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as morgan from 'morgan';
 import * as mongoose from 'mongoose';
+import TelegrafApp from './app/telegram/telegramapp';
+import TelegramBot from './app/telegram/telegrambot';
 const config = require('../config/config.json');
 
 import setRoutes from './app/routes';
@@ -9,9 +11,14 @@ import setRoutes from './app/routes';
 const app = express();
 app.set('port', (config.port || 3000));
 
+const bot = new TelegramBot(TelegrafApp);
+
+TelegrafApp.command('start', (ctx) => ctx.reply('Hello'));
+
+app.use(TelegrafApp.webhookCallback('/' + config.TELEGRAM_WEBHOOK.SECRET_PATH));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(morgan('dev'));
 /* COMMENT THIS BLOCK IF YOU DON'T WANT CORS REQUESTS TO WORK */
 app.use(function(req, res, next) {

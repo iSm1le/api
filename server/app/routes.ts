@@ -2,6 +2,8 @@ import * as express from 'express';
 
 import UserCtrl from './controllers/user';
 
+const config = require('../../config/config');
+
 export default function setRoutes(app) {
 
     const router = express.Router();
@@ -18,8 +20,8 @@ export default function setRoutes(app) {
     router.route('/users/count').get(userCtrl.count);
     router.route('/user/id/:id').get(userCtrl.get);
     router.route('/user/id/:id').put(userCtrl.update);
-    router.route('/user/id/:id').delete(userCtrl.delete);
+    router.route('/user/id/:id').delete(userCtrl.remove);
 
-    // Apply the routes to our application with the prefix /api
+    // Apply prefix to app
     app.use('/', router);
 }
