@@ -13,8 +13,6 @@ app.set('port', (config.port || 3000));
 
 const bot = new TelegramBot(TelegrafApp);
 
-TelegrafApp.command('start', (ctx) => ctx.reply('Hello'));
-
 app.use(TelegrafApp.webhookCallback('/' + config.TELEGRAM_WEBHOOK.SECRET_PATH));
 
 app.use(bodyParser.json());
