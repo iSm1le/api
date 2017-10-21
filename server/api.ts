@@ -23,14 +23,12 @@ app.use(morgan('dev'));
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, charset');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, charset, x-auth-token');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, OPTIONS, DELETE, POST');
   next();
 });
 
-/* TODO: secure some api paths */
-/* TODO: add yrv paths */
-/* TODO: add codecov support */
+/* TODO: add groups paths */
 
 mongoose.connect(config.dbUrl, { useMongoClient: true });
 const db = mongoose.connection;
