@@ -11,27 +11,11 @@ export default function setRoutes(app) {
   const userCtrl = new UserCtrl();
   const yrvCtrl = new YrvCtrl();
 
-  router.route('/').get(function (req, res) {
-    res.redirect('docs');
-  });
-
-  // Users
-  router.route('/user/login').post(userCtrl.login);
-  router.route('/user').post(userCtrl.insert);
-
-  // YRV
-  router.route('/yrv/random').get(yrvCtrl.getRandom);
-  router.route('/yrvs').get(yrvCtrl.getAll);
-  router.route('/yrvs/count').get(yrvCtrl.count);
-  router.route('/yrv/id/:id').get(yrvCtrl.get);
-
-  router.use((req, res, next) => {
+  const checkAuth = ((req, res, next) => {
     if (req.method === 'OPTIONS') {
       return res.sendStatus(204);
     }
-
     const token = req.body.token || req.query.token || req.headers['x-auth-token'];
-
     if (token) {
       jwt.verify(token, config.sToken, (err, decoded) => {
         if (err) {
@@ -46,17 +30,31 @@ export default function setRoutes(app) {
     }
   });
 
+  router.route('/').get(function (req, res) {
+    res.redirect('docs');
+  });
+
+  // Users
+  router.route('/user/login').post(userCtrl.login);
+  router.route('/user').post(userCtrl.insert);
+
+  // YRV
+  router.route('/yrv/random').get(yrvCtrl.getRandom);
+  router.route('/yrvs').get(yrvCtrl.getAll);
+  router.route('/yrvs/count').get(yrvCtrl.count);
+  router.route('/yrv/id/:id').get(yrvCtrl.get);
+
   // User protected
-  router.route('/users').get(userCtrl.getAll);
-  router.route('/users/count').get(userCtrl.count);
-  router.route('/user/id/:id').get(userCtrl.get);
-  router.route('/user/id/:id').put(userCtrl.update);
-  router.route('/user/id/:id').delete(userCtrl.remove);
+  router.route('/users').get(checkAuth, userCtrl.getAll);
+  router.route('/users/count').get(checkAuth, userCtrl.count);
+  router.route('/user/id/:id').get(checkAuth, userCtrl.get);
+  router.route('/user/id/:id').put(checkAuth, userCtrl.update);
+  router.route('/user/id/:id').delete(checkAuth, userCtrl.remove);
 
   // YRV protected
-  router.route('/yrv').post(yrvCtrl.insert);
-  router.route('/yrv/id/:id').put(yrvCtrl.update);
-  router.route('/yrv/id/:id').delete(yrvCtrl.remove);
+  router.route('/yrv').post(checkAuth, yrvCtrl.insert);
+  router.route('/yrv/id/:id').put(checkAuth, yrvCtrl.update);
+  router.route('/yrv/id/:id').delete(checkAuth, yrvCtrl.remove);
 
   // Apply prefix to app
   app.use('/', router);
